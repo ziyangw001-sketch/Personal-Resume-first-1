@@ -2,6 +2,41 @@
  * Ziyang Wang Portfolio — i18n, animations, interactions
  */
 
+/** Private contact endpoints — not rendered as visible text on the page */
+const contactConfig = {
+  whatsapp: '60145851213',
+  linkedin: 'https://www.linkedin.com/in/ziyang-wang-747b20372',
+  mailSubject: 'Professional Inquiry — Ziyang Wang Portfolio',
+  whatsappMessage: {
+    en: 'Hello, I came across your portfolio and would like to connect regarding a professional opportunity.',
+    zh: '您好，我在您的个人主页了解到您的背景，希望就职业相关事宜与您联系。'
+  }
+};
+
+/** Build recipient at runtime to avoid plain-text email in static markup */
+function getContactEmail() {
+  const local = ['ziyang', 'w002'].join('');
+  const domain = ['gmail', 'com'].join('.');
+  return `${local}@${domain}`;
+}
+
+function buildMailtoUrl() {
+  const params = new URLSearchParams({
+    subject: contactConfig.mailSubject
+  });
+  return `mailto:${getContactEmail()}?${params.toString()}`;
+}
+
+function buildGmailUrl() {
+  const params = new URLSearchParams({
+    view: 'cm',
+    fs: '1',
+    to: getContactEmail(),
+    su: contactConfig.mailSubject
+  });
+  return `https://mail.google.com/mail/?${params.toString()}`;
+}
+
 const translations = {
   en: {
     'nav.about': 'About',
@@ -106,8 +141,16 @@ const translations = {
 
     'contact.label': 'Contact',
     'contact.title': "Let's connect",
-    'contact.desc': 'Open to opportunities in international finance, capital markets, and data-driven financial roles.',
-    'contact.cta': 'Send an email',
+    'contact.status': 'Open to professional opportunities',
+    'contact.desc': 'For roles in international finance, capital markets, and data-driven financial functions.',
+    'contact.btnPrimary': 'Contact Me',
+    'contact.btnEmail': 'Email Me',
+    'contact.btnLinkedin': 'LinkedIn',
+    'contact.hintWhatsApp': 'Message on WhatsApp',
+    'contact.hintEmail': 'Contact via Email',
+    'contact.emailAria': 'Email Me',
+    'contact.hintLinkedin': 'View professional profile',
+    'contact.note': 'Professional inquiries only · Personal details are not displayed on this site',
 
     'footer.tagline': 'International Finance · Global Perspective'
   },
@@ -213,8 +256,16 @@ const translations = {
 
     'contact.label': '联系方式',
     'contact.title': '期待与您交流',
-    'contact.desc': '欢迎国际金融、资本市场及数据驱动金融相关机会。',
-    'contact.cta': '发送邮件',
+    'contact.status': '开放职业相关沟通',
+    'contact.desc': '面向国际金融、资本市场及数据驱动金融相关机会。',
+    'contact.btnPrimary': '联系我',
+    'contact.btnEmail': '发送邮件',
+    'contact.btnLinkedin': 'LinkedIn',
+    'contact.hintWhatsApp': '通过 WhatsApp 快速联系',
+    'contact.hintEmail': '通过邮件联系',
+    'contact.emailAria': '发送邮件',
+    'contact.hintLinkedin': '查看职业档案',
+    'contact.note': '仅限职业相关咨询 · 本站不展示个人敏感信息',
 
     'footer.tagline': '国际金融 · 全球视野'
   }
@@ -242,6 +293,9 @@ function setLanguage(lang) {
     el.classList.remove('active');
   });
   document.querySelector(`.lang-${lang === 'zh' ? 'zh' : 'en'}`)?.classList.add('active');
+
+  updateContactLinks();
+  updateEmailAria();
 
   setTimeout(() => {
     document.body.classList.remove('lang-switching');
@@ -303,7 +357,7 @@ function initSmoothAnchors() {
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', (e) => {
       const id = anchor.getAttribute('href');
-      if (id === '#') return;
+      if (!id || id === '#') return;
       const target = document.querySelector(id);
       if (target) {
         e.preventDefault();
@@ -313,6 +367,61 @@ function initSmoothAnchors() {
       }
     });
   });
+}
+
+function updateEmailAria() {
+  const emailBtn = document.getElementById('contactEmail');
+  const label = translations[currentLang]?.['contact.emailAria'];
+  if (emailBtn && label) {
+    emailBtn.setAttribute('aria-label', label);
+  }
+}
+
+function updateContactLinks() {
+  const lang = currentLang === 'zh' ? 'zh' : 'en';
+  const waText = contactConfig.whatsappMessage[lang];
+  const whatsapp = `https://wa.me/${contactConfig.whatsapp}?text=${encodeURIComponent(waText)}`;
+
+  document.getElementById('contactWhatsApp')?.setAttribute('href', whatsapp);
+  document.getElementById('contactLinkedin')?.setAttribute('href', contactConfig.linkedin);
+}
+
+function openEmailClient(e) {
+  e.preventDefault();
+
+  const mailto = buildMailtoUrl();
+  const gmail = buildGmailUrl();
+  let appOpened = false;
+
+  const markOpened = () => {
+    appOpened = true;
+  };
+
+  window.addEventListener('blur', markOpened, { once: true });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) markOpened();
+  }, { once: true });
+
+  window.location.href = mailto;
+
+  setTimeout(() => {
+    window.removeEventListener('blur', markOpened);
+    if (!appOpened) {
+      window.open(gmail, '_blank', 'noopener,noreferrer');
+    }
+  }, 900);
+}
+
+function initEmailButton() {
+  const emailBtn = document.getElementById('contactEmail');
+  emailBtn?.addEventListener('click', openEmailClient);
+  emailBtn?.setAttribute('href', '#');
+}
+
+function initContactLinks() {
+  updateContactLinks();
+  initEmailButton();
+  updateEmailAria();
 }
 
 function initParallax() {
@@ -344,5 +453,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initNav();
   initReveal();
   initSmoothAnchors();
+  initContactLinks();
   initParallax();
 });
