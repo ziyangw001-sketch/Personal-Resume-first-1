@@ -1,12 +1,12 @@
 /**
- * Ziyang Wang Portfolio — i18n, animations, interactions
+ * Wesley Wang Portfolio — i18n, animations, interactions
  */
 
 /** Private contact endpoints — not rendered as visible text on the page */
 const contactConfig = {
   whatsapp: '6582565188',
   linkedin: 'https://www.linkedin.com/in/wesley-wang-747b20372/',
-  mailSubject: 'Professional Inquiry — Ziyang Wang Portfolio',
+  mailSubject: 'Professional Inquiry — Wesley Wang Portfolio',
   whatsappMessage: {
     en: 'Hello, I came across your portfolio and would like to connect regarding a professional opportunity.',
     zh: '您好，我在您的个人主页了解到您的背景，希望就职业相关事宜与您联系。'
