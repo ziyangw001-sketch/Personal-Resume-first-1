@@ -4,7 +4,7 @@
 
 /** Private contact endpoints — not rendered as visible text on the page */
 const contactConfig = {
-  whatsapp: '60145851213',
+  whatsapp: '6582565188',
   linkedin: 'https://www.linkedin.com/in/wesley-wang-747b20372/',
   mailSubject: 'Professional Inquiry — Ziyang Wang Portfolio',
   whatsappMessage: {
@@ -41,7 +41,7 @@ const translations = {
   en: {
     'exp.jpl.title': "AI Financial Analyst",
     'exp.jpl.company': "JPL Consultants",
-    'exp.jpl.date': "15 Sep 2026 – Present",
+    'exp.jpl.date': "Sep 2026 – Present",
     'exp.jpl.l1': "Current role combining financial analysis, data, and applied AI",
     'exp.jpl.l2': "Develop and evaluate AI-assisted workflows for reporting and document organisation",
     'exp.jpl.l3': "Check outputs against source information, with attention to data quality and human review",
@@ -188,7 +188,7 @@ const translations = {
   zh: {
     'exp.jpl.title': "AI 财务分析师",
     'exp.jpl.company': "JPL Consultants",
-    'exp.jpl.date': "2026.09.15 – 至今",
+    'exp.jpl.date': "2026.09 – 至今",
     'exp.jpl.l1': "现职结合财务分析、数据与 AI 应用",
     'exp.jpl.l2': "开发与评估用于报告和文件整理的 AI 辅助工作流",
     'exp.jpl.l3': "对照来源检查输出，关注数据质量与人工复核",
